@@ -1,0 +1,50 @@
+pipelines:
+  sample-pipeline:
+    group: pipeline
+    label_template: "${COUNT}-${DATE}"
+    environment_variables:
+      DATE: "$(date +'%Y%m%d-%H%M%S')"  # Format: YYYYMMDD-HHMMSS
+    materials:
+      git:
+        url: https://github.com/toopukondabhaskar/test-code
+        branch: master
+    stages:
+      - build:
+          jobs:
+            - compile:
+                tasks:
+                  - exec:
+                      command: mkdir
+                      arguments: -p artifacts/build_logs
+                  - exec:
+                      command: echo
+                      arguments:
+                        - "Starting build process on $(date)"
+                  - exec:
+                      command: mvn
+                      arguments: clean install
+                  - exec:
+                      command: cp
+                      arguments:
+                        - target/*.jar
+                        - "artifacts/build_logs/sample-app-$(date +'%Y%m%d-%H%M%S').jar"
+                  - exec:
+                      command: echo
+                      arguments:
+                        - "Build completed on $(date)"
+      - deploy:
+          jobs:
+            - deploy-app:
+                tasks:
+                  - exec:
+                      command: echo
+                      arguments:
+                        - "Deploying application on $(date)"
+                  - exec:
+                      command: scp
+                      arguments:
+                        - "artifacts/build_logs/sample-app-$(date +'%Y%m%d-%H%M%S').jar"
+                  - exec:
+                      command: echo
+                      arguments:
+                        - "Deployment completed on $(date)"
