@@ -1,0 +1,49 @@
+# Filename: sample_app_pipeline.gocd.yaml
+format_version: 10
+
+pipelines:
+  sample-app-pipeline:
+    group: Group pipelines
+    label_template: "${COUNT}"
+    materials:
+      git:
+        git-repo:
+          url: https://github.com/bhashkar45/test-code
+          branch: master
+          destination: src
+    stages:
+      - build:
+          jobs:
+            build-job:
+              tasks:
+                - exec:
+                    command: echo
+                    arguments:
+                      - "Starting build stage..."
+                - exec:
+                    command: ./gradlew
+                    arguments:
+                      - build
+                    working_directory: src
+                - exec:
+                    command: echo
+                    arguments:
+                      - "Build stage completed successfully!"
+
+      - deploy:
+          approval:
+            type: manual
+          jobs:
+            deploy-job:
+              tasks:
+                - exec:
+                    command: echo
+                    arguments:
+                      - "Starting deployment..."
+                - exec:
+                    command: ./deploy_script.sh
+                    working_directory: src
+                - exec:
+                    command: echo
+                    arguments:
+                      - "Deployment completed successfully!"
