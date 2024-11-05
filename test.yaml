@@ -7,7 +7,7 @@ pipelines:
     materials:
       git:
         url: https://github.com/toopukondabhaskar/test-code
-        branch: master
+        branch: patch2
     stages:
       - build:
           jobs:
