@@ -1,0 +1,33 @@
+pipelines:
+  SampleAppPipeline:
+    group: 'SampleAppGroup'
+    label_template: '${COUNT}'
+    materials:
+      git:
+        url: 'https://github.com/bhashkar45/test-code'  # Replace with your actual Git repo URL
+        branch: 'master'
+    stages:
+      - build:
+          jobs:
+            - build_job:
+                tasks:
+                  - exec:
+                      command: 'pip'
+                      arguments: ['install', '-r', 'requirements.txt']
+                  - exec:
+                      command: 'python'
+                      arguments: ['app.py']
+      - test:
+          jobs:
+            - test_job:
+                tasks:
+                  - exec:
+                      command: 'python'
+                      arguments: ['-m', 'unittest', 'discover', '-s', 'tests']
+      - deploy:
+          jobs:
+            - deploy_job:
+                tasks:
+                  - exec:
+                      command: 'echo'
+                      arguments: ['Deploying to the server']
