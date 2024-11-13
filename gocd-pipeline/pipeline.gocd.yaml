@@ -1,0 +1,43 @@
+format_version: 12
+
+pipelines:
+  my-sample-pipeline:
+    group: sample-group
+    label_template: "${COUNT}"
+    lock_behavior: none
+    materials:
+      git-code-repo:
+        type: git
+        url: https://github.com/bhashkar45/test-code.git
+        branch: development
+        destination: source-code
+        shallow_clone: true
+    stages:
+      - build:
+          clean_workspace: true
+          jobs:
+            - compile-and-test:
+                artifacts:
+                  - build:
+                      source: source-code/build-output
+                      destination: build-artifacts
+                tasks:
+                  - script:
+                      run_if: passed
+                      file: source-code/build-scripts/build.sh
+                  - bash:
+                      run_if: passed
+                      command: echo "Build completed successfully"
+
+      - deploy:
+          clean_workspace: true
+          jobs:
+            - deploy-job:
+                environment_variables:
+                  DEPLOY_ENV: dev
+                tasks:
+                  - bash:
+                      run_if: passed
+                      command: |
+                        echo "Starting deployment to ${DEPLOY_ENV} environment"
+                        # Add deployment script/command here
