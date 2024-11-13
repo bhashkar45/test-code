@@ -1,12 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sample App</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoCD Pipeline</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .stage {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .job {
+            margin-top: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background-color: #fff;
+        }
+    </style>
 </head>
 <body>
-  <h1>Hello, World! Welcome to my sample app.</h1>
-  <p>This is a simple Node.js app for testing a GoCD pipeline.</p>
+    <h1>Sample GoCD Pipeline</h1>
+    <div class="pipeline">
+        <div class="stage">
+            <h2>Stage 1: Source</h2>
+            <div class="job">Job 1: Fetch Code</div>
+            <div class="job">Job 2: Code Linting</div>
+        </div>
+        <div class="stage">
+            <h2>Stage 2: Build</h2>
+            <div class="job">Job 1: Compile Code</div>
+            <div class="job">Job 2: Unit Tests</div>
+        </div>
+        <div class="stage">
+            <h2>Stage 3: Deploy</h2>
+            <div class="job">Job 1: Deploy to Staging</div>
+            <div class="job">Job 2: Run Smoke Tests</div>
+        </div>
+    </div>
 </body>
 </html>
